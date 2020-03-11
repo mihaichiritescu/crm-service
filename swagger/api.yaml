@@ -1,0 +1,142 @@
+openapi: 3.0.0
+servers:
+  - url: https://foobarbaz.llc.dev.vgw-us.com:8800
+  - url: https://foobarbaz.llc.accept.vgw-us.com:8800
+  - url: https://foobarbaz.llc.stage.vgw-us.com:8800
+  - url: https://foobarbaz.llc.prod.vgw-us.com:8800
+info:
+  description: Definitions of LuckyLand Slots' FooBarBaz service's APIs.
+  version: 1.0.0
+  title: LLS FooBarBaz API
+  contact:
+    email: sofie.graham@vgw.co
+tags:
+  - name: LLS FooBarBaz API
+    description: Endpoints exposed to LuckyLand Slots' clients and services for foobarbaz requests
+paths:
+  /v1/instances:
+    post:
+      tags:
+        - LLS FooBarBaz API
+      summary: Create a new foobarbaz instance
+      security:
+        - ApiKeyAuth: []
+      requestBody:
+        description: The foobarbaz instance to create
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FooBarBazCreation"
+      responses:
+        201:
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FooBarBazInstance"
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        401:
+          description: Not authorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /v1/instances/:instanceId:
+    get:
+      tags:
+        - LLS FooBarBaz API
+      summary: Fetch a single foobarbaz instance
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - in: path
+          name: instanceId
+          description: Id of the foobarbaz to retrieve
+          required: true
+          schema:
+            $ref: "#/components/schemas/Id"
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FooBarBazInstance"
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        401:
+          description: Not authorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        404:
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      # eg: Authorization: API-KEY yourapikeyhere
+  schemas:
+    DateTime:
+      type: string
+      format: date-time
+      example: "2018-07-15T19:45:00.000Z"
+    Error:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string
+          example: This is a totally helpful error message
+    Id:
+      type: number
+      format: int64
+      example: 37
+    FooBarBazInstance:
+      allOf:
+        - $ref: "#/components/schemas/FooBarBazCreation"
+      type: object
+      required:
+        - createdAt
+        - id
+      properties:
+        createdAt:
+          $ref: "#/components/schemas/DateTime"
+        id:
+          $ref: "#/components/schemas/Id"
+        updatedAt:
+          $ref: "#/components/schemas/DateTime"
+    FooBarBazCreation:
+      type: object
+      required:
+        - name
+        - userId
+      properties:
+        name:
+          type: string
+          example: "Tester McTester"
+        userId:
+          $ref: "#/components/schemas/UserId"
+    UserId:
+      $ref: "#/components/schemas/UUID"
+    UUID:
+      type: string
+      format: uuid
+      example: 8916862a-1a9d-432e-9fc8-a9a8a40567a0
