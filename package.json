@@ -1,7 +1,7 @@
 {
-  "name": "lls-svc-foobarbaz",
+  "name": "crm-service",
   "version": "1.0.0",
-  "description": "LuckyLand Slots' FooBarBaz service",
+  "description": "CRM service",
   "main": "build/main/index.js",
   "typings": "build/main/index.d.ts",
   "module": "build/module/index.js",

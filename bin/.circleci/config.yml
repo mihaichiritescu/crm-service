@@ -1,0 +1,253 @@
+# https://circleci.com/docs/2.0/language-javascript/
+version: 2.1
+
+orbs:
+  aws-cli: circleci/aws-cli@0.1.13
+
+jobs:
+  test_and_docs:
+    docker:
+      - image: circleci/node:12.13.0
+        environment:
+          DATABASE_USER: postgres
+          DATABASE_PASSWORD: postgres
+          DATABASE_HOST: 127.0.0.1
+          DATABASE_NAME: players
+          DATABASE_PORT: 5432
+          POSTGRES_MAX: 800
+      - image: circleci/postgres:9.6.5-alpine-ram
+        environment:
+          POSTGRES_USER: postgres
+          POSTGRES_DB: players
+    working_directory: ~/lls-svc-player
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "package.json" }}
+      - run:
+          name: Download Swagger UI
+          command: |
+            if [ ! -d "swagger-ui-3.22.0" ]; then
+              wget -qO- https://github.com/swagger-api/swagger-ui/archive/v3.22.0.tar.gz | tar xvz
+            fi
+      - run:
+          name: Install Flyway
+          command: |
+            if [ ! -d "flyway-5.2.4" ]; then
+              wget -qO- https://repo1.maven.org/maven2/org/flywaydb/flyway-commandline/5.2.4/flyway-commandline-5.2.4-linux-x64.tar.gz | tar xvz
+            fi
+            sudo ln -s `pwd`/flyway-5.2.4/flyway /usr/local/bin
+      - run:
+          name: Install Dependencies
+          command: yarn install --network-concurrency 1
+      - save_cache:
+          paths:
+            - flyway-5.2.4
+            - node_modules
+            - swagger-ui-3.22.0
+          key: v1-dependencies-{{ checksum "package.json" }}
+      - run:
+          name: Run Migrations
+          command: ./bin/db-migrate
+      - run:
+          name: Build
+          command: yarn build
+      - run:
+          name: Lint
+          command: yarn test:lint
+      - run:
+          name: Test
+          command: yarn test:unit
+      - run:
+          name: Generate Coverage Report
+          command: yarn run cov:html
+      - run:
+          name: Check Coverage Report
+          command: yarn run cov:check
+      - run:
+          name: Generate Code Documentation
+          command: yarn run doc:html
+      - run:
+          name: Generate Swagger Documentation
+          command: |
+            sed -i -e 's/https\:\/\/petstore.swagger.io\/v2\/swagger.json/api.yaml/g' swagger-ui-3.22.0/dist/index.html
+            cp swagger/api.yaml swagger-ui-3.22.0/dist/api.yaml
+      - store_artifacts:
+          path: coverage
+          destination: coverage
+      - store_artifacts:
+          path: build/docs
+          destination: docs
+      - store_artifacts:
+          path: swagger-ui-3.22.0/dist
+          destination: swagger
+      - persist_to_workspace:
+          root: .
+          paths:
+            - build/main
+            - db/migration
+            - Dockerfile
+            - Dockerfile_migrations
+            - newrelic.js
+            - node_modules
+
+  push_latest:
+    executor: aws-cli/default
+    environment:
+      - AWS_DEFAULT_REGION: us-east-1
+      - DOCKER_STAGE: 981611730941.dkr.ecr.us-east-1.amazonaws.com
+      - PROFILE_STAGE: vgw-shared-stage
+      - REPOSITORY_NAME: luckyland-player
+    steps:
+      - setup_remote_docker
+      - attach_workspace:
+          at: .
+      - run:
+          name: Create version.json File
+          command: |
+            cat > version.json \<< EOF
+            {
+              "branchName": "$CIRCLE_BRANCH",
+              "buildNumber": "$CIRCLE_BUILD_NUM",
+              "buildURL": "$CIRCLE_BUILD_URL",
+              "commitHash": "$CIRCLE_SHA1",
+              "repositoryName": "$CIRCLE_PROJECT_REPONAME",
+              "repositoryURL": "$CIRCLE_REPOSITORY_URL",
+              "tag": "latest",
+              "username": "$CIRCLE_PROJECT_USERNAME"
+            }
+            EOF
+      - run:
+          name: Docker Build
+          command: |
+            docker build -t $REPOSITORY_NAME:latest .
+            docker build -t $REPOSITORY_NAME-migrations:latest -f Dockerfile_migrations .
+      - aws-cli/install
+      - run:
+          name: Setup Environment Variables (stage)
+          command: |
+            echo 'export AWS_ACCESS_KEY_ID="$AWS_ACCESS_KEY_ID_STAGE"' >> $BASH_ENV
+            echo 'export AWS_SECRET_ACCESS_KEY="$AWS_SECRET_ACCESS_KEY_STAGE"' >> $BASH_ENV
+      - aws-cli/configure:
+          profile-name: $PROFILE_STAGE
+      - run:
+          name: AWS ECR Login
+          command: $(aws ecr get-login --no-include-email --region $AWS_DEFAULT_REGION --profile $PROFILE_STAGE)
+      - run:
+          name: Docker Tag
+          command: |
+            docker tag $REPOSITORY_NAME:latest $DOCKER_STAGE/$REPOSITORY_NAME:latest
+            docker tag $REPOSITORY_NAME-migrations:latest $DOCKER_STAGE/$REPOSITORY_NAME-migrations:latest
+      - run:
+          name: Docker Push
+          command: |
+            docker push $DOCKER_STAGE/$REPOSITORY_NAME:latest
+            docker push $DOCKER_STAGE/$REPOSITORY_NAME-migrations:latest
+
+  push_tag:
+    executor: aws-cli/default
+    environment:
+      - AWS_DEFAULT_REGION: us-east-1
+      - DOCKER_STAGE: 981611730941.dkr.ecr.us-east-1.amazonaws.com
+      - DOCKER_PROD: 333330005620.dkr.ecr.us-east-1.amazonaws.com
+      - PROFILE_STAGE: vgw-shared-stage
+      - PROFILE_PROD: vgw-shared-prod
+      - REPOSITORY_NAME: luckyland-player
+    steps:
+      - setup_remote_docker
+      - attach_workspace:
+          at: .
+      - run:
+          name: Create version.json File
+          command: |
+            cat > version.json \<< EOF
+            {
+              "branchName": "$CIRCLE_BRANCH",
+              "buildNumber": "$CIRCLE_BUILD_NUM",
+              "buildURL": "$CIRCLE_BUILD_URL",
+              "commitHash": "$CIRCLE_SHA1",
+              "repositoryName": "$CIRCLE_PROJECT_REPONAME",
+              "repositoryURL": "$CIRCLE_REPOSITORY_URL",
+              "tag": "$CIRCLE_TAG",
+              "username": "$CIRCLE_PROJECT_USERNAME"
+            }
+            EOF
+      - run:
+          name: Docker Build
+          command: |
+            docker build -t $REPOSITORY_NAME:$CIRCLE_TAG -t $REPOSITORY_NAME:latest .
+            docker build -t $REPOSITORY_NAME-migrations:$CIRCLE_TAG -t $REPOSITORY_NAME-migrations:latest -f Dockerfile_migrations .
+      - aws-cli/install
+      - run:
+          name: Setup Environment Variables (stage)
+          command: |
+            echo 'export AWS_ACCESS_KEY_ID="$AWS_ACCESS_KEY_ID_STAGE"' >> $BASH_ENV
+            echo 'export AWS_SECRET_ACCESS_KEY="$AWS_SECRET_ACCESS_KEY_STAGE"' >> $BASH_ENV
+      - aws-cli/configure:
+          profile-name: $PROFILE_STAGE
+      - run:
+          name: AWS ECR Login
+          command: $(aws ecr get-login --no-include-email --region $AWS_DEFAULT_REGION --profile $PROFILE_STAGE)
+      - run:
+          name: Docker Tag
+          command: |
+            docker tag $REPOSITORY_NAME:$CIRCLE_TAG $DOCKER_STAGE/$REPOSITORY_NAME:$CIRCLE_TAG
+            docker tag $REPOSITORY_NAME-migrations:$CIRCLE_TAG $DOCKER_STAGE/$REPOSITORY_NAME-migrations:$CIRCLE_TAG
+            docker tag $REPOSITORY_NAME:latest $DOCKER_STAGE/$REPOSITORY_NAME:latest
+            docker tag $REPOSITORY_NAME-migrations:latest $DOCKER_STAGE/$REPOSITORY_NAME-migrations:latest
+      - run:
+          name: Docker Push
+          command: |
+            docker push $DOCKER_STAGE/$REPOSITORY_NAME:$CIRCLE_TAG
+            docker push $DOCKER_STAGE/$REPOSITORY_NAME-migrations:$CIRCLE_TAG
+            docker push $DOCKER_STAGE/$REPOSITORY_NAME:latest
+            docker push $DOCKER_STAGE/$REPOSITORY_NAME-migrations:latest
+      - run:
+          name: Setup Environment Variables (prod)
+          command: |
+            echo 'export AWS_ACCESS_KEY_ID="$AWS_ACCESS_KEY_ID_PROD"' >> $BASH_ENV
+            echo 'export AWS_SECRET_ACCESS_KEY="$AWS_SECRET_ACCESS_KEY_PROD"' >> $BASH_ENV
+      - aws-cli/configure:
+          profile-name: $PROFILE_PROD
+      - run:
+          name: AWS ECR Login
+          command: $(aws ecr get-login --no-include-email --region $AWS_DEFAULT_REGION --profile $PROFILE_PROD)
+      - run:
+          name: Docker Tag
+          command: |
+            docker tag $REPOSITORY_NAME:$CIRCLE_TAG $DOCKER_PROD/$REPOSITORY_NAME:$CIRCLE_TAG
+            docker tag $REPOSITORY_NAME-migrations:$CIRCLE_TAG $DOCKER_PROD/$REPOSITORY_NAME-migrations:$CIRCLE_TAG
+            docker tag $REPOSITORY_NAME:latest $DOCKER_PROD/$REPOSITORY_NAME:latest
+            docker tag $REPOSITORY_NAME-migrations:latest $DOCKER_PROD/$REPOSITORY_NAME-migrations:latest
+      - run:
+          name: Docker Push
+          command: |
+            docker push $DOCKER_PROD/$REPOSITORY_NAME:$CIRCLE_TAG
+            docker push $DOCKER_PROD/$REPOSITORY_NAME-migrations:$CIRCLE_TAG
+            docker push $DOCKER_PROD/$REPOSITORY_NAME:latest
+            docker push $DOCKER_PROD/$REPOSITORY_NAME-migrations:latest
+
+workflows:
+  version: 2
+  test_and_push:
+    jobs:
+      - test_and_docs:
+          filters:
+            tags:
+              only: /^v.*/
+      - push_latest:
+          requires:
+            - test_and_docs
+          filters:
+            branches:
+              only:
+                - master
+      - push_tag:
+          requires:
+            - test_and_docs
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/

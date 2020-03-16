@@ -2,4 +2,9 @@ export DATABASE_HOST=$(ifconfig | grep -E "([0-9]{1,3}\.){3}[0-9]{1,3}" | grep -
 export DATABASE_PORT=5432
 export DATABASE_USER=postgres
 export DATABASE_PASSWORD=postgres
-export DATABASE_NAME=foobarbazs
+export DATABASE_NAME=crm
+export APPLICATION_NAME=crm-service
+export BASE_URL=http://localhost:8808
+export ENVIRONMENT=local
+export PRODUCT=shared
+

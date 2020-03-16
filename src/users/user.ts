@@ -1,5 +1,4 @@
 import {
-  findAllRows,
   findFirstRowWithId,
   insertOneRow
 } from 'lls-lib-postgres';
@@ -48,12 +47,7 @@ export const createInstance = async (
   );
 };
 
-export const findInstanceById = async (client: any, id: string) => {
+export const findUserById = async (client: any, id: string) => {
   return _normalize(await findFirstRowWithId(client, TABLES.INSTANCES, id));
 };
 
-export const findAllInstances = async (client: any) => {
-  return (
-    await findAllRows(client, TABLES.INSTANCES, undefined, 'created_at', 'DESC')
-  ).map(_normalize);
-};

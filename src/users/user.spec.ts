@@ -1,4 +1,4 @@
-import test from 'ava';
+/*import test from 'ava';
 import { findAllRows, getClient, getNewPool } from 'lls-lib-postgres';
 
 import { TABLES } from '../enums';
@@ -77,4 +77,4 @@ test('When `createInstance` is called Then it return the created instance', asyn
     name: NAME,
     userId: USER_ID
   });
-});
+});*/
