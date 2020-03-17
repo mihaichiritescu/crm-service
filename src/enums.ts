@@ -1,3 +1,3 @@
 export enum TABLES {
-  INSTANCES = 'foobarbazs.instances'
+  USERS = 'crm.users'
 }

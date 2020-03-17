@@ -6,48 +6,42 @@ import {
 import { TABLES } from '../enums';
 
 import {
-  Instance,
-  InstanceInsert,
-  InstanceObject,
-  InstanceRow
+  User,
+  UserInsert,
+  UserObject,
+  UserRow
 } from '../types/types';
 
 export const _normalize = (
-  instance: InstanceRow | undefined
-): Instance | undefined => {
-  return instance
+  user: UserRow | undefined
+): User | undefined => {
+  return user
     ? {
-        createdAt: instance.created_at && instance.created_at.toISOString(),
-        id: instance.id,
-        name: instance.name,
-        updatedAt: instance.updated_at && instance.updated_at.toISOString(),
-        userId: instance.user_id
+        createdAt: user.created_at && user.created_at.toISOString(),
+        id: user.id,
+        name: user.name,
+        updatedAt: user.updated_at && user.updated_at.toISOString()
       }
     : undefined;
 };
 
 export const _serialize = (
-  instance: Instance | InstanceObject | undefined
-): InstanceInsert | undefined => {
-  return instance
+  user: User | UserObject | undefined
+): UserInsert | undefined => {
+  return user
     ? {
-        name: instance.name,
-        user_id: instance.userId
+        name: user.name
       }
     : undefined;
 };
 
-export const createInstance = async (
-  client: any,
-  name: string,
-  userId: string
-) => {
-  return _normalize(
-    await insertOneRow(client, TABLES.INSTANCES, _serialize({ name, userId }))
-  );
+export const findUserById = async (client: any, id: string) => {
+  return _normalize(await findFirstRowWithId(client, TABLES.USERS, id));
 };
 
-export const findUserById = async (client: any, id: string) => {
-  return _normalize(await findFirstRowWithId(client, TABLES.INSTANCES, id));
+export const createUser = async (client: any, name: string) => {
+  return _normalize(
+    await insertOneRow(client, TABLES.USERS, _serialize({ name: name }))
+  );
 };
 

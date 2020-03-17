@@ -27,8 +27,8 @@ app.use(corsHeadersFor('*'));
 environmentVariableToBoolean(process.env.LOG_ALL_REQUESTS) &&
   app.use(requestLogger);
 
-//import setupInstancesRoutes from './instances/routes';
-//setupInstancesRoutes(app);
+import setupUserRoutes from './users/routes';
+setupUserRoutes(app);
 
 app.use(errorLogger);
 app.use((_err: any, _req: Request, res: Response, _next: NextFunction) => {

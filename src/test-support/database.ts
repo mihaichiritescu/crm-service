@@ -7,5 +7,5 @@ export const deleteTable = async (client: any, table: string) => {
 };
 
 export const deleteAllTables = async (client: any) => {
-  await deleteTable(client, TABLES.INSTANCES);
+  await deleteTable(client, TABLES.USERS);
 };

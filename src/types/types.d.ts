@@ -1,20 +1,18 @@
-export type InstanceObject = {
+export type UserObject = {
   readonly name: string;
-  readonly userId: string;
 };
 
-export type Instance = InstanceObject & {
+export type User = UserObject & {
   readonly createdAt: string;
   readonly id: string;
   readonly updatedAt: string;
 };
 
-export type InstanceInsert = {
+export type UserInsert = {
   readonly name: string;
-  readonly user_id: string;
 };
 
-export type InstanceRow = InstanceInsert & {
+export type UserRow = UserInsert & {
   readonly created_at: Date;
   readonly id: string;
   readonly updated_at: Date;
