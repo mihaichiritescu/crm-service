@@ -10,8 +10,8 @@
 
 ### To use this template:
 
-- Find and replace all references to `foobarbaz` with the name of your service using the 'Match Case' option
-- Find and replace all references to `FooBarBaz` with the name of your service using the 'Match Case' option
+- Find and replace all references to `crm-service` with the name of your service using the 'Match Case' option
+- Find and replace all references to `crm-service` with the name of your service using the 'Match Case' option
 - Find and replace all references to port `880X` with the next unused port number (see other services for latest)
 - Update the [`swagger/api.yaml`](https://github.com/mihaichiritescu/crm-service/tree/master/swagger/api.yaml) to match your new API
 - Update the database migration file [`V0_1__initial.sql`](https://github.com/mihaichiritescu/crm-service/tree/master/db/migration/V0_1__initial.sql) to create your desired database initial migration
@@ -40,12 +40,12 @@ This repository has an updated [Swagger definition](https://github.com/mihaichir
 
 | Name                    | Description                                                               | Example Value           | Required
 |-------------------------|---------------------------------------------------------------------------|-------------------------|----------
-| `APPLICATION_NAME`      | Application name used in New Relic.                                       |             `foobarbaz` |     ✔️
+| `APPLICATION_NAME`      | Application name used in New Relic.                                       |           `crm-service` |     ✔️
 | `BASE_URL`              | Base URL where the service is run.                                        | `http://localhost:880X` |     ✔️
 | `DATABASE_USER`         | Database username.                                                        |              `postgres` |     ✔️
 | `DATABASE_PASSWORD`     | Database password.                                                        |              `postgres` |     ✔️
 | `DATABASE_HOST`         | Database hostname.                                                        |             `localhost` |     ✔️
-| `DATABASE_NAME`         | Database name.                                                            |            `foobarbazs` |     ✔️
+| `DATABASE_NAME`         | Database name.                                                            |                   `crm` |     ✔️
 | `DATABASE_PORT`         | Database port.                                                            |                  `5432` |     ✔️
 | `ENVIRONMENT`           | Current environment (`local`, `dev`, `accept`, `stage`, `prod`).          |                 `local` |     ✔️
 | `LOG_ALL_REQUESTS`      | Log all requests / responses handled by the service (flag).               |                  `true` |
@@ -55,12 +55,12 @@ This repository has an updated [Swagger definition](https://github.com/mihaichir
 | `PRODUCT`               | Product target for this application (`llc`, `shared`).                    |                `shared` |     ✔️
 
 ```
-export APPLICATION_NAME=foobarbaz
+export APPLICATION_NAME=crm-service
 export BASE_URL=http://localhost:880X
 export DATABASE_USER=postgres
 export DATABASE_PASSWORD=postgres
 export DATABASE_HOST=localhost
-export DATABASE_NAME=foobarbazs
+export DATABASE_NAME=crm
 export DATABASE_PORT=5432
 export ENVIRONMENT=local
 export PRODUCT=shared
@@ -131,13 +131,13 @@ curl -H "Content-Type: application/json" -X POST http://localhost:880X/v1/my-end
 
 ```
 docker run \
-  -e APPLICATION_NAME=foobarbaz \
+  -e APPLICATION_NAME=crm-service \
   -e BASE_URL="http://localhost:880X" \
   -e DATABASE_HOST=$(ifconfig | grep -E "([0-9]{1,3}\.){3}[0-9]{1,3}" | grep -v 127.0.0.1 | awk '{ print $2 }' | cut -f2 -d: | head -n1) \
   -e DATABASE_PORT=5432 \
   -e DATABASE_USER=postgres \
   -e DATABASE_PASSWORD=postgres \
-  -e DATABASE_NAME=foobarbazs \
+  -e DATABASE_NAME=crm \
   -e ENVIRONMENT=local \
   -e PRODUCT=shared \
   -p 880X:880X \

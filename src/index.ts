@@ -32,5 +32,5 @@ app.use((_err: any, _req: Request, res: Response, _next: NextFunction) => {
 });
 
 export default app.listen(getPort(), () => {
-  logger.info(`foobarbaz service is listening on port ${getPort()}.`);
+  logger.info(`CRM service is listening on port ${getPort()}.`);
 });

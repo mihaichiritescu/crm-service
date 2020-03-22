@@ -12,26 +12,26 @@ tags:
   - name: CRM Service API
     description: Endpoints exposed to clients and services for CRM requests
 paths:
-  /v1/instances:
+  /v1/users:
     post:
       tags:
         - CRM Service API
-      summary: Create a new foobarbaz instance
+      summary: Create a new user
       security:
         - ApiKeyAuth: []
       requestBody:
-        description: The foobarbaz instance to create
+        description: The user to create
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/FooBarBazCreation"
+              $ref: "#/components/schemas/UserCreation"
       responses:
         201:
           description: Created
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/FooBarBazInstance"
+                $ref: "#/components/schemas/User"
         400:
           description: Bad request
           content:
@@ -44,17 +44,17 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-  /v1/instances/:instanceId:
+  /v1/users/:userId:
     get:
       tags:
         - CRM Service API
-      summary: Fetch a single foobarbaz instance
+      summary: Fetch a single user
       security:
         - ApiKeyAuth: []
       parameters:
         - in: path
-          name: instanceId
-          description: Id of the foobarbaz to retrieve
+          name: userId
+          description: Id of the user to retrieve
           required: true
           schema:
             $ref: "#/components/schemas/Id"
@@ -64,7 +64,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/FooBarBazInstance"
+                $ref: "#/components/schemas/User"
         400:
           description: Bad request
           content:
@@ -107,9 +107,7 @@ components:
       type: number
       format: int64
       example: 37
-    FooBarBazInstance:
-      allOf:
-        - $ref: "#/components/schemas/FooBarBazCreation"
+    User:
       type: object
       required:
         - createdAt
@@ -121,17 +119,6 @@ components:
           $ref: "#/components/schemas/Id"
         updatedAt:
           $ref: "#/components/schemas/DateTime"
-    FooBarBazCreation:
-      type: object
-      required:
-        - name
-        - userId
-      properties:
-        name:
-          type: string
-          example: "Tester McTester"
-        userId:
-          $ref: "#/components/schemas/UserId"
     UserId:
       $ref: "#/components/schemas/UUID"
     UUID:

@@ -3,4 +3,4 @@ FROM boxfuse/flyway:5.0.7-alpine
 COPY ./db/migration /flyway/sql
 
 ENTRYPOINT [ "sh" ]
-CMD ["-c", "flyway -url=jdbc:postgresql://$DATABASE_HOST:$DATABASE_PORT/$DATABASE_NAME -user=$DATABASE_USER -password=$DATABASE_PASSWORD -schemas=foobarbazs migrate"]
+CMD ["-c", "flyway -url=jdbc:postgresql://$DATABASE_HOST:$DATABASE_PORT/$DATABASE_NAME -user=$DATABASE_USER -password=$DATABASE_PASSWORD -schemas=crm migrate"]
