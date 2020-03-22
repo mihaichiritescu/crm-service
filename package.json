@@ -62,7 +62,6 @@
     "@types/validator": "^12.0.1",
     "body-parser": "^1.18.3",
     "express": "^4.16.4",
-    "lls-lib-helpers": "ssh://git@github.com:VGW/lls-lib-helpers.git#v1.6.0",
     "lls-lib-log": "ssh://git@github.com:VGW/lls-lib-log.git#v1.1.7",
     "newrelic": "^5.11.0",
     "sequelize": "^5.21.5",

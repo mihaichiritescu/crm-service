@@ -10,12 +10,10 @@ try {
 
 import parser from 'body-parser';
 import express, { NextFunction, Request, Response } from 'express';
-import {
-  corsHeadersFor,
-  environmentVariableToBoolean,
-  setupVersionRoute
-} from 'lls-lib-helpers';
 import { errorLogger, logger, requestLogger } from 'lls-lib-log';
+import setupUserRoutes from './users/routes';
+import { corsHeadersFor, setupVersionRoute } from './helpers/middlewares';
+import { environmentVariableToBoolean } from './helpers/helpers';
 
 const app = express();
 setupVersionRoute(app);
@@ -26,8 +24,6 @@ app.use(parser.json());
 app.use(corsHeadersFor('*'));
 environmentVariableToBoolean(process.env.LOG_ALL_REQUESTS) &&
   app.use(requestLogger);
-
-import setupUserRoutes from './users/routes';
 setupUserRoutes(app);
 
 app.use(errorLogger);

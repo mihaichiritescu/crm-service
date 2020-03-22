@@ -1,8 +1,13 @@
 // tslint:disable: no-if-statement no-object-mutation
-import { getMissingKeysOnObject } from 'lls-lib-helpers';
 import yargs from 'yargs';
 
 const argv = yargs.argv;
+
+export const getMissingKeysOnObject = (
+  obj: { readonly [key: string]: string | undefined },
+  keys: ReadonlyArray<string>
+): ReadonlyArray<string> =>
+  keys.filter((key: string) => typeof obj[key] === 'undefined');
 
 export const getPort = () => (argv.port ? argv.port : 8800);
 

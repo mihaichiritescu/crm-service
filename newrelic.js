@@ -1,6 +1,6 @@
 'use strict'
 
-const buildNewRelicApplicationName = require('lls-lib-helpers').buildNewRelicApplicationName;
+import { buildNewRelicApplicationName } from "./src/helpers/newrelic";
 
 /**
  * New Relic agent configuration.
