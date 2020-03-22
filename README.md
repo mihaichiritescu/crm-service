@@ -2,23 +2,23 @@
 
 ### This template contains working examples of the following:
 
-- Initial database migration (see [`/db`](https://github.com/VGW/lls-tpl-service/tree/master/db/migration))
-- Examples of a simple `GET` and `POST` API (see [`/src/instances/`](https://github.com/VGW/lls-tpl-service/tree/master/src/instances))
+- Initial database migration (see [`/db`](https://github.com/mihaichiritescu/crm-service/tree/master/db/migration))
+- Examples of a simple `GET` and `POST` API (see [`/src/instances/`](https://github.com/mihaichiritescu/crm-service/tree/master/src/instances))
 - Runnable working tests (see `.spec.ts` files)
-- Examples of type, enum and test data definitions (see [`types.d.ts`](https://github.com/VGW/lls-tpl-service/tree/master/src/types/types.d.ts), [`enums.ts`](https://github.com/VGW/lls-tpl-service/tree/master/src/enum.ts), [`data.ts`](https://github.com/VGW/lls-tpl-service/tree/master/src/test-support/data.ts))
-- Standard server and logger setup (see [`/src/index.ts`](https://github.com/VGW/lls-tpl-service/tree/master/src/index.ts))
+- Examples of type, enum and test data definitions (see [`types.d.ts`](https://github.com/mihaichiritescu/crm-service/tree/master/src/types/types.d.ts), [`enums.ts`](https://github.com/mihaichiritescu/crm-service/tree/master/src/enum.ts), [`data.ts`](https://github.com/mihaichiritescu/crm-service/tree/master/src/test-support/data.ts))
+- Standard server and logger setup (see [`/src/index.ts`](https://github.com/mihaichiritescu/crm-service/tree/master/src/index.ts))
 
 ### To use this template:
 
 - Find and replace all references to `foobarbaz` with the name of your service using the 'Match Case' option
 - Find and replace all references to `FooBarBaz` with the name of your service using the 'Match Case' option
 - Find and replace all references to port `880X` with the next unused port number (see other services for latest)
-- Update the [`swagger/api.yaml`](https://github.com/VGW/lls-tpl-service/tree/master/swagger/api.yaml) to match your new API
-- Update the database migration file [`V0_1__initial.sql`](https://github.com/VGW/lls-tpl-service/tree/master/db/migration/V0_1__initial.sql) to create your desired database initial migration
-- The entire [`/src/instances`](https://github.com/VGW/lls-tpl-service/tree/master/src/instances)  folder should be removed or edited to work with your desired model
-- Data in [`types.d.ts`](https://github.com/VGW/lls-tpl-service/tree/master/src/types/types.d.ts), [`enums.ts`](https://github.com/VGW/lls-tpl-service/tree/master/src/enum.ts) and [`data.ts`](https://github.com/VGW/lls-tpl-service/tree/master/src/test-support/data.ts) should be removed or updated
+- Update the [`swagger/api.yaml`](https://github.com/mihaichiritescu/crm-service/tree/master/swagger/api.yaml) to match your new API
+- Update the database migration file [`V0_1__initial.sql`](https://github.com/mihaichiritescu/crm-service/tree/master/db/migration/V0_1__initial.sql) to create your desired database initial migration
+- The entire [`/src/instances`](https://github.com/mihaichiritescu/crm-service/tree/master/src/instances)  folder should be removed or edited to work with your desired model
+- Data in [`types.d.ts`](https://github.com/mihaichiritescu/crm-service/tree/master/src/types/types.d.ts), [`enums.ts`](https://github.com/mihaichiritescu/crm-service/tree/master/src/enum.ts) and [`data.ts`](https://github.com/mihaichiritescu/crm-service/tree/master/src/test-support/data.ts) should be removed or updated
 - Delete everything from the top of this document to the next `***` and update the rest of the `README` accordingly
-- Follow [the documentation to create a new service](https://github.com/VGW/lls-documentation/blob/master/lls-svc.md#create) to get fully setup
+- Follow [the documentation to create a new service](https://github.com/mihaichiritescu/crm-service) to get fully setup
 
 ***
 
@@ -34,7 +34,7 @@ Simple CRM service
 
 ### Endpoint Definitions
 
-This repository has an updated [Swagger definition](https://github.com/VGW/lls-svc-foobarbaz/blob/master/swagger/api.yaml) of all the endpoints it provides. Drop the contents of the file in the [Swagger editor](https://editor.swagger.io/) for easy review.
+This repository has an updated [Swagger definition](https://github.com/mihaichiritescu/crm-service/blob/master/swagger/api.yaml) of all the endpoints it provides. Drop the contents of the file in the [Swagger editor](https://editor.swagger.io/) for easy review.
 
 ### Environment Variables
 
@@ -74,7 +74,7 @@ For a full description of available commands:
 yarn describe
 ```
 
-Try to follow the [Conventional Commits specification](https://www.conventionalcommits.org/en/v1.0.0-beta.3) when committing code, as it is use to generate the [CHANGELOG.md](https://github.com/VGW/lls-lib-foobarbaz/blob/master/CHANGELOG.md).
+Try to follow the [Conventional Commits specification](https://www.conventionalcommits.org/en/v1.0.0-beta.3) when committing code, as it is use to generate the [CHANGELOG.md](https://github.com/mihaichiritescu/crm-service/blob/master/CHANGELOG.md).
 
 ### Install
 
@@ -141,7 +141,7 @@ docker run \
   -e ENVIRONMENT=local \
   -e PRODUCT=shared \
   -p 880X:880X \
-  lls-svc-foobarbaz:latest
+  crm-service:latest
 ```
 
 ### Test

@@ -1,23 +1,21 @@
 openapi: 3.0.0
 servers:
-  - url: https://foobarbaz.llc.dev.vgw-us.com:8800
-  - url: https://foobarbaz.llc.accept.vgw-us.com:8800
-  - url: https://foobarbaz.llc.stage.vgw-us.com:8800
-  - url: https://foobarbaz.llc.prod.vgw-us.com:8800
+  - url: https://crm-service.com:8800
+
 info:
   description: Definitions of CRM service's APIs.
   version: 1.0.0
-  title: LLS FooBarBaz API
+  title: CRM Service API
   contact:
-    email: sofie.graham@vgw.co
+    email: paul@creativemark.ro
 tags:
-  - name: LLS FooBarBaz API
+  - name: CRM Service API
     description: Endpoints exposed to clients and services for CRM requests
 paths:
   /v1/instances:
     post:
       tags:
-        - LLS FooBarBaz API
+        - CRM Service API
       summary: Create a new foobarbaz instance
       security:
         - ApiKeyAuth: []
@@ -49,7 +47,7 @@ paths:
   /v1/instances/:instanceId:
     get:
       tags:
-        - LLS FooBarBaz API
+        - CRM Service API
       summary: Fetch a single foobarbaz instance
       security:
         - ApiKeyAuth: []

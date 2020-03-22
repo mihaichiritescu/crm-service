@@ -19,7 +19,7 @@ jobs:
         environment:
           POSTGRES_USER: postgres
           POSTGRES_DB: players
-    working_directory: ~/lls-svc-player
+    working_directory: ~/crm-service
     steps:
       - checkout
       - restore_cache:
