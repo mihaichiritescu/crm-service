@@ -10,10 +10,10 @@ try {
 
 import parser from 'body-parser';
 import express, { NextFunction, Request, Response } from 'express';
-import { errorLogger, logger, requestLogger } from 'lls-lib-log';
 import setupUserRoutes from './users/routes';
 import { corsHeadersFor, setupVersionRoute } from './helpers/middlewares';
 import { environmentVariableToBoolean } from './helpers/helpers';
+import { requestLogger, errorLogger, logger } from './helpers/log';
 
 const app = express();
 setupVersionRoute(app);

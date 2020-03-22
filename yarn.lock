@@ -404,6 +404,24 @@
     "@types/node" "*"
     "@types/range-parser" "*"
 
+"@types/express-winston@^3.0.3":
+  version "3.0.4"
+  resolved "https://registry.yarnpkg.com/@types/express-winston/-/express-winston-3.0.4.tgz#0818399a094374f16c39bcba24ebcea3891791c6"
+  integrity sha512-fCvI4nTs/oYhq7jACnPurepOPMKz//bNuCwMIRCcESix9jEuky93H5KwkyKeEPGNZfQzR3zCUbeGWs6/jvV7Fg==
+  dependencies:
+    "@types/express" "*"
+    "@types/logform" "*"
+    winston "^3.0.0"
+
+"@types/express@*":
+  version "4.17.3"
+  resolved "https://registry.yarnpkg.com/@types/express/-/express-4.17.3.tgz#38e4458ce2067873b09a73908df488870c303bd9"
+  integrity sha512-I8cGRJj3pyOLs/HndoP+25vOqhqWkAZsWMEmq1qXy/b/M3ppufecUwaK2/TVDVxcV61/iSdhykUjQQ2DLSrTdg==
+  dependencies:
+    "@types/body-parser" "*"
+    "@types/express-serve-static-core" "*"
+    "@types/serve-static" "*"
+
 "@types/express@^4.16.1":
   version "4.17.2"
   resolved "https://registry.yarnpkg.com/@types/express/-/express-4.17.2.tgz#a0fb7a23d8855bac31bc01d5a58cadd9b2173e6c"
@@ -421,6 +439,13 @@
     "@types/events" "*"
     "@types/minimatch" "*"
     "@types/node" "*"
+
+"@types/logform@*":
+  version "1.10.1"
+  resolved "https://registry.yarnpkg.com/@types/logform/-/logform-1.10.1.tgz#d7abe0cc8bdc0931fd0072f6a90b7f91cdbb3f4f"
+  integrity sha512-7PFeU3gNsaG80dNWIl9FafSCnc4oYRXlyJ4yM38i0hMuqJaIMGSARS16QKTKfN4nZmNkA2Yy1z3h1WkJxgGbmA==
+  dependencies:
+    logform "*"
 
 "@types/mime@*":
   version "2.0.1"
@@ -3325,13 +3350,6 @@ levn@~0.3.0:
     prelude-ls "~1.1.2"
     type-check "~0.3.2"
 
-"lls-lib-log@ssh://git@github.com:VGW/lls-lib-log.git#v1.1.7":
-  version "1.1.7"
-  resolved "ssh://git@github.com:VGW/lls-lib-log.git#fb77146a095289c5906abbc625f71cd172ed5c3f"
-  dependencies:
-    express-winston "^3.2.1"
-    winston "^3.2.1"
-
 load-json-file@^1.0.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/load-json-file/-/load-json-file-1.1.0.tgz#956905708d58b4bab4c2261b04f59f31c99374c0"
@@ -3472,7 +3490,7 @@ log-symbols@^2.2.0:
   dependencies:
     chalk "^2.0.1"
 
-logform@^2.1.1:
+logform@*, logform@^2.1.1:
   version "2.1.2"
   resolved "https://registry.yarnpkg.com/logform/-/logform-2.1.2.tgz#957155ebeb67a13164069825ce67ddb5bb2dd360"
   integrity sha512-+lZh4OpERDBLqjiwDLpAWNQu6KMjnlXH2ByZwCuSqVPJletw0kTWJf5CgSNAUKn1KUkv3m2cUz/LK8zyEy7wzQ==
@@ -6061,7 +6079,7 @@ winston-transport@^4.3.0:
     readable-stream "^2.3.6"
     triple-beam "^1.2.0"
 
-winston@^3.2.1:
+winston@^3.0.0, winston@^3.2.1:
   version "3.2.1"
   resolved "https://registry.yarnpkg.com/winston/-/winston-3.2.1.tgz#63061377976c73584028be2490a1846055f77f07"
   integrity sha512-zU6vgnS9dAWCEKg/QYigd6cgMVVNwyTzKs81XZtTFuRwJOcDdBg7AU0mXVyNbs7O5RH2zdv+BdNZUlx7mXPuOw==
