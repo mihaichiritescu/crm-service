@@ -22,13 +22,13 @@
 
 ***
 
-# lls-svc-foobarbaz
+# crm-service
 
-LuckyLand Slots' FooBarBaz service
+CRM service
 
 ## Purpose
 
-LuckyLand Slots' ...
+Simple CRM service
 
 ## Definition
 

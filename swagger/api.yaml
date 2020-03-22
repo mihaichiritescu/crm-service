@@ -5,14 +5,14 @@ servers:
   - url: https://foobarbaz.llc.stage.vgw-us.com:8800
   - url: https://foobarbaz.llc.prod.vgw-us.com:8800
 info:
-  description: Definitions of LuckyLand Slots' FooBarBaz service's APIs.
+  description: Definitions of CRM service's APIs.
   version: 1.0.0
   title: LLS FooBarBaz API
   contact:
     email: sofie.graham@vgw.co
 tags:
   - name: LLS FooBarBaz API
-    description: Endpoints exposed to LuckyLand Slots' clients and services for foobarbaz requests
+    description: Endpoints exposed to clients and services for CRM requests
 paths:
   /v1/instances:
     post:

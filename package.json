@@ -7,7 +7,7 @@
   "module": "build/module/index.js",
   "license": "UNLICENSED",
   "private": true,
-  "repository": "https://github.com/VGW/lls-svc-foobarbaz",
+  "repository": "https://github.com/mihaichiritescu/crm-service",
   "keywords": [],
   "scripts": {
     "all": "run-s reset test cov:html cov:check doc:html",
@@ -57,12 +57,15 @@
     "node": ">=12"
   },
   "dependencies": {
+    "pg": "^7.9.0",
+    "@types/bluebird": "^3.5.30",
+    "@types/validator": "^12.0.1",
     "body-parser": "^1.18.3",
     "express": "^4.16.4",
     "lls-lib-helpers": "ssh://git@github.com:VGW/lls-lib-helpers.git#v1.6.0",
     "lls-lib-log": "ssh://git@github.com:VGW/lls-lib-log.git#v1.1.7",
-    "lls-lib-postgres": "ssh://git@github.com:VGW/lls-lib-postgres.git#v1.10.6",
     "newrelic": "^5.11.0",
+    "sequelize": "^5.21.5",
     "yargs": "^13.2.2"
   },
   "devDependencies": {

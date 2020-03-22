@@ -27,7 +27,7 @@
     "no-if-statement": true,
     /* end tslint-immutable rules */
 
-    // LuckyLand Slots' rules
+    // Rules
     "variable-name": [true, "ban-keywords", "check-format", "allow-leading-underscore"],
     "no-unused-expression": [true, "allow-fast-null-checks"]
   }
